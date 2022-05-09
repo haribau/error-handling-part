@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="error-2Flow" doc:id="e76e474f-f3ad-470f-ab8e-15065e0b8e0d" >
+		<http:listener doc:name="Listener" doc:id="33463e62-8d97-4c99-93cf-ec9102e21c23" config-ref="HTTP_Listener_config" path="error1">
+			<http:error-response >
+				<http:body ><![CDATA[#[payload]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<set-payload value='#["before request payload"]' doc:name="before request payload" doc:id="2449219d-f3e2-48dc-9b71-caf47fadc158" />
+		<http:request method="POST" doc:name="Request" doc:id="60aa8659-0acf-4702-986f-7f3723cb4cd9" url="gsavduyewbdsjjh"/>
+		<set-payload value='#["after request payload"]' doc:name="after request payload" doc:id="12951ee0-e7dd-4646-b632-84beb22f96f4" />
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7ef41140-41a1-4437-ae58-fba40c6a9f8d" type="HTTP:BAD_REQUEST">
+				<set-payload value='#["error raised on error handling"]' doc:name="Set Payload" doc:id="919a8d81-4c85-43cc-9d76-fa31733d1057" />
+			</on-error-propagate>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="7ed704e4-3f84-4fa6-956a-60312b3f0687" type="ANY">
+				<set-payload value='#["error success"]' doc:name="Set Payload" doc:id="95c78514-88ee-40de-bd6f-c543ff6b8523" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

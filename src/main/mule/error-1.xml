@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bd87d2f7-6d08-46b6-b532-88ba75c7bbbd" >
+		<http:listener-connection host="localhost" port="8082" />
+	</http:listener-config>
+	<flow name="error-1Flow" doc:id="9b03ebe2-5d58-45ac-8b2e-bf1aa8ff5f9b" >
+		<http:listener doc:name="Listener" doc:id="d317f294-6083-4584-bfcc-05eb479ff3f4" config-ref="HTTP_Listener_config" path="er1">
+		</http:listener>
+		<set-payload value='#["Main flow before request payload"]' doc:name="Main flow before request payload" doc:id="ec8c6c32-fc45-4d98-9390-b6e6c13e84b1" />
+		<flow-ref doc:name="Flow Reference" doc:id="3c9fb61e-d5cd-4aec-84a9-ecd3cb86edc6" name="privateFlow"/>
+		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="fa921172-b175-48a8-853c-0f5b483cda11" >
+			<set-payload value='#["Main flow after request payload"]' doc:name="Main flow after request payload" doc:id="8cc3f81f-e997-4b7c-84a9-2ef6452b4597" />
+		</until-successful>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3e81ae3e-1290-4196-bb7a-b77d1a6dfe65" >
+				<set-payload value='#["flow1 error handler"]' doc:name="Set Payload" doc:id="ec28f003-bb27-4965-b8c7-60209e69a86c" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="privateFlow" doc:id="94507ded-1c70-496b-ac77-188dba79e37a" >
+		<try doc:name="Try" doc:id="69f73f65-9986-4d68-a317-b11cbccb81e2" >
+			<http:request method="GET" doc:name="Request" doc:id="1b8c580a-00cc-44a5-9791-5bf38ae8f6da" url="seghtlrkktnnt" />
+			<error-handler>
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c58f6958-3299-4921-8839-d7ecfa3374e0" >
+					<set-payload value='#["inside priate flow error"]' doc:name="inside private flow error" doc:id="70bd6621-0c56-4607-a22c-f6fea1828b06" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="586ca060-4bbf-4080-a867-7969a3053897" />
+	</flow>
+	<flow name="error-2Flow2" doc:id="3c8a5ce4-a353-41f1-82f9-e4f9c624d586" >
+		<http:listener doc:name="Listener" doc:id="c56bc01b-105f-4539-b61b-a63a526ff705" config-ref="HTTP_Listener_config" path="er2"/>
+		<set-payload value='#["main flow2 before request payload"]' doc:name="main flow2 before request payload" doc:id="5fdfa476-55e0-425f-9f2f-58ed6cca3214" />
+		<http:request method="GET" doc:name="Request" doc:id="11da4c15-0664-44c7-a86d-7e6bb1e2ff5f" url="hatidnjshkfdlgknj"/>
+		<set-payload value='#["main flow2 after request payload"]' doc:name="main flow2 after request payload" doc:id="f3bc73da-0edb-45f0-b20b-fd039cdfa1d2" />
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="682bea86-fd5a-40b1-a90d-08e683ed8828" type="HTTP:BAD_REQUEST">
+				<set-payload value='#["flow2 inside error handle"]' doc:name="flow2 inside error handle" doc:id="f42e79b4-6120-4ce2-8e98-2cba0f75e1c1" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

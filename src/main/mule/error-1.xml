@@ -18,6 +18,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<until-successful maxRetries="5" doc:name="Until Successful" doc:id="fa921172-b175-48a8-853c-0f5b483cda11" >
 			<set-payload value='#["Main flow after request payload"]' doc:name="Main flow after request payload" doc:id="8cc3f81f-e997-4b7c-84a9-2ef6452b4597" />
 		</until-successful>
+		<logger level="INFO" doc:name="Logger" doc:id="11dc2fa8-c5cc-4da7-b764-7c212f564c88" />
 		<error-handler >
 			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3e81ae3e-1290-4196-bb7a-b77d1a6dfe65" >
 				<set-payload value='#["flow1 error handler"]' doc:name="Set Payload" doc:id="ec28f003-bb27-4965-b8c7-60209e69a86c" />

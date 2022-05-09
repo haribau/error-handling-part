@@ -43,7 +43,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<set-payload value='#["main flow2 after request payload"]' doc:name="main flow2 after request payload" doc:id="f3bc73da-0edb-45f0-b20b-fd039cdfa1d2" />
 		<error-handler>
 			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="682bea86-fd5a-40b1-a90d-08e683ed8828" type="HTTP:BAD_REQUEST">
-				<set-payload value='#["flow2 inside error handle"]' doc:name="flow2 inside error handle" doc:id="f42e79b4-6120-4ce2-8e98-2cba0f75e1c1" />
+				<logger level="INFO" doc:name="Logger" doc:id="b73d97a8-77ec-404a-a57d-fb0c0ab0d91e" message='#["flow2 inside error handle"]'/>
 			</on-error-continue>
 		</error-handler>
 	</flow>
